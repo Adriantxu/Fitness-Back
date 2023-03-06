@@ -1,6 +1,13 @@
+// Nest Js
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+
+// Modules
 import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
+import { UtilsModule } from './utils/utils.module';
+
+// Database
 import { PrismaDbModule } from './prisma-db/prisma-db.module';
 
 @Module({
@@ -10,6 +17,8 @@ import { PrismaDbModule } from './prisma-db/prisma-db.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    UserModule,
+    UtilsModule,
   ],
   controllers: [],
   providers: [],
