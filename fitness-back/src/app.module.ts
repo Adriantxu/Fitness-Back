@@ -9,6 +9,7 @@ import { UtilsModule } from './utils/utils.module';
 
 // Database
 import { PrismaDbModule } from './prisma-db/prisma-db.module';
+import { ExercisesModule } from './exercises/exercises.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { PrismaDbModule } from './prisma-db/prisma-db.module';
     }),
     UserModule,
     UtilsModule,
+    ExercisesModule,
   ],
   controllers: [],
   providers: [],
