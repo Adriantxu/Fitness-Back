@@ -29,4 +29,17 @@ export class UserService {
     delete newUser.password;
     return newUser;
   }
+
+  async deleteUser(id: number) {
+    const checkExistance = await this.prismaService.user.findUnique({
+      where: { id },
+    });
+    if (!checkExistance) {
+      throw new NotFoundException('User not found');
+    }
+    await this.prismaService.user.delete({
+      where: { id },
+    });
+    return {};
+  }
 }

@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   ForbiddenException,
   Get,
   Patch,
@@ -50,5 +51,18 @@ export class UserController {
       );
     }
     return await this.userService.updateProfile(userId, rawBody);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/me')
+  async deleteUser(@Req() req: Request) {
+    const user = this.utils.extractUserJwtMiddleware(req);
+    const userId = user ? parseInt(user['sub'] as string) : null;
+
+    if (userId == null)
+      throw new ForbiddenException(
+        'An error happend while retrieving information.',
+      );
+    return await this.userService.deleteUser(userId);
   }
 }
