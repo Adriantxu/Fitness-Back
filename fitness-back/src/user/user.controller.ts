@@ -7,12 +7,13 @@ import {
   Get,
   Patch,
   Req,
+  Res,
   UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { UserService } from './user.service';
 import { Utils } from 'src/utils/middlewareHelper';
 import { UserUpdateDto } from './dto';
@@ -54,7 +55,7 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Delete('/me')
+  @Delete('me')
   async deleteUser(@Req() req: Request) {
     const user = this.utils.extractUserJwtMiddleware(req);
     const userId = user ? parseInt(user['sub'] as string) : null;
@@ -64,5 +65,13 @@ export class UserController {
         'An error happend while retrieving information.',
       );
     return await this.userService.deleteUser(userId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('logout')
+  async logout(@Req() req, @Res() res: Response) {
+    // res.clearCookie('jwt');
+    res.redirect('/');
+    return {};
   }
 }
