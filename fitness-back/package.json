@@ -8,6 +8,7 @@
   "scripts": {
     "prisma:dev:deploy": "prisma migrate deploy",
     "prisma:dev:migration": "npx prisma migrate dev init",
+    "prisma:dev:migration:hosted": "npx prisma db push",
     "db:dev:rm": "yes | docker-compose rm dev-db",
     "db:dev:stop": "yes | docker-compose stop dev-db",
     "db:dev:start": "yes | docker-compose start dev-db",

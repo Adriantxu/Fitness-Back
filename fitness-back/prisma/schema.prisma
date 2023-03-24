@@ -10,6 +10,103 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// model User {
+//   id                Int               @id @default(autoincrement())
+//   email             String            @unique
+//   password          String
+//   name              String
+//   height            Float?
+//   weight            Float?
+//   body_fat          Float?
+//   muscle_mass       Float?
+//   goals             Goal[]
+//   workout_plans     WorkoutPlan[]
+//   sleeps            Sleep[]
+//   supplements       Supplement[]
+//   injuries          Injury[]
+//   progress_pictures ProgressPicture[]
+// }
+
+// model Exercise {
+//   id          Int      @id @default(autoincrement())
+//   name        String
+//   description String?
+//   bodyPart    BodyPart @relation(fields: [bodyPartId], references: [id])
+//   bodyPartId  Int
+//   sets        Set[]
+// }
+
+// model Set {
+//   id            Int          @id @default(autoincrement())
+//   reps          Int
+//   weight        Float
+//   date          DateTime
+//   exercise      Exercise     @relation(fields: [exerciseId], references: [id])
+//   exerciseId    Int
+//   WorkoutPlan   WorkoutPlan? @relation(fields: [workoutPlanId], references: [id])
+//   workoutPlanId Int?
+// }
+
+// model Goal {
+//   id        Int      @id @default(autoincrement())
+//   goal      String
+//   goal_date DateTime
+//   user      User     @relation(fields: [userId], references: [id])
+//   userId    Int
+// }
+
+// model BodyPart {
+//   id        Int        @id @default(autoincrement())
+//   name      String
+//   exercises Exercise[]
+// }
+
+// model WorkoutPlan {
+//   id         Int      @id @default(autoincrement())
+//   name       String
+//   date       DateTime
+//   exercises  Set[]
+//   exerciseId Int[]
+//   user       User     @relation(fields: [userId], references: [id])
+//   userId     Int
+// }
+
+// model Sleep {
+//   id      Int      @id @default(autoincrement())
+//   hours   Float
+//   quality Int
+//   date    DateTime
+//   user    User     @relation(fields: [userId], references: [id])
+//   userId  Int
+// }
+
+// model Supplement {
+//   id     Int      @id @default(autoincrement())
+//   name   String
+//   dosage Float
+//   time   DateTime
+//   user   User     @relation(fields: [userId], references: [id])
+//   userId Int
+// }
+
+// model Injury {
+//   id             Int     @id @default(autoincrement())
+//   name           String
+//   recovery_time  Int
+//   avoid_exercise String?
+//   user           User    @relation(fields: [userId], references: [id])
+//   userId         Int
+// }
+
+// model ProgressPicture {
+//   id      Int      @id @default(autoincrement())
+//   picture Bytes
+//   date    DateTime
+//   notes   String?
+//   user    User     @relation(fields: [userId], references: [id])
+//   userId  Int
+// }
+
 model User {
   id                Int               @id @default(autoincrement())
   email             String            @unique
@@ -37,14 +134,14 @@ model Exercise {
 }
 
 model Set {
-  id            Int          @id @default(autoincrement())
-  reps          Int
-  weight        Float
-  date          DateTime
-  exercise      Exercise     @relation(fields: [exerciseId], references: [id])
-  exerciseId    Int
-  WorkoutPlan   WorkoutPlan? @relation(fields: [workoutPlanId], references: [id])
-  workoutPlanId Int?
+  id          Int           @id @default(autoincrement())
+  reps        Int
+  weight      Float
+  date        DateTime
+  exercise    Exercise      @relation(fields: [exerciseId], references: [id])
+  exerciseId  Int
+  workouts    WorkoutPlan[] @relation("SetToWorkoutPlan")
+  Workout_Set Workout_Set[]
 }
 
 model Goal {
@@ -62,13 +159,13 @@ model BodyPart {
 }
 
 model WorkoutPlan {
-  id         Int      @id @default(autoincrement())
-  name       String
-  date       DateTime
-  exercises  Set[]
-  exerciseId Int[]
-  user       User     @relation(fields: [userId], references: [id])
-  userId     Int
+  id          Int           @id @default(autoincrement())
+  name        String
+  date        DateTime
+  sets        Set[]         @relation("SetToWorkoutPlan")
+  user        User          @relation(fields: [userId], references: [id])
+  userId      Int
+  Workout_Set Workout_Set[]
 }
 
 model Sleep {
@@ -105,4 +202,13 @@ model ProgressPicture {
   notes   String?
   user    User     @relation(fields: [userId], references: [id])
   userId  Int
+}
+
+// Pivot table to connect WorkoutPlan and Set models
+model Workout_Set {
+  id            Int         @id @default(autoincrement())
+  workoutPlan   WorkoutPlan @relation(fields: [workoutPlanId], references: [id])
+  workoutPlanId Int
+  set           Set         @relation(fields: [setId], references: [id])
+  setId         Int
 }
