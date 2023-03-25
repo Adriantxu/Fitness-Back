@@ -3,7 +3,6 @@ import { PrismaDbService } from 'src/prisma-db/prisma-db.service';
 import { AuthRegisterDto } from './dto/auth.register.dto';
 import { AuthLoginDto } from './dto/auth.login.dto';
 import * as argon from 'argon2';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
@@ -16,28 +15,27 @@ export class AuthService {
   ) {}
 
   async signUp(dto: AuthRegisterDto) {
+    // find the user email in the db
+    const userExist = await this.prismaService.user.findUnique({
+      where: {
+        email: dto.email,
+      },
+    });
+    // if its not found throw an error
+    if (userExist) {
+      throw new ForbiddenException('Email already in use, try login in.');
+    }
     // generate a hash password
     const pwdHashed = await argon.hash(dto.password);
 
     // save the user in the database
-    const user = await this.prismaService.user
-      .create({
-        data: {
-          name: dto.name,
-          email: dto.email,
-          password: pwdHashed,
-        },
-      })
-      .catch((err) => {
-        if (err instanceof PrismaClientKnownRequestError) {
-          if (err.code === 'P2002') {
-            throw new ForbiddenException('This email is already in use');
-          }
-        } else {
-          throw err;
-        }
-      });
-
+    const user = await this.prismaService.user.create({
+      data: {
+        name: dto.name,
+        email: dto.email,
+        password: pwdHashed,
+      },
+    });
     // return the user created
     return this.signToken(user['id'], user['email']);
   }
