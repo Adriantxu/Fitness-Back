@@ -26,8 +26,6 @@ export class AuthService {
           name: dto.name,
           email: dto.email,
           password: pwdHashed,
-          height: dto.height,
-          weight: dto.weight,
         },
       })
       .catch((err) => {

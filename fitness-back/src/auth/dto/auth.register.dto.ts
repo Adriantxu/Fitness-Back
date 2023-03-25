@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class AuthRegisterDto {
   @IsString()
@@ -12,12 +12,4 @@ export class AuthRegisterDto {
   @IsString()
   @IsNotEmpty()
   name: string;
-
-  @IsNumber()
-  @IsNotEmpty()
-  height: number;
-
-  @IsNumber()
-  @IsNotEmpty()
-  weight: number;
 }
