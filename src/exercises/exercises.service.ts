@@ -29,4 +29,14 @@ export class ExercisesService {
       select: { name: true },
     });
   }
+
+  async getArrayExerciseId() {
+    return this.prisma.exercise
+      .findMany({
+        select: { id: true },
+      })
+      .then((result) => {
+        return result.map((item) => item.id);
+      });
+  }
 }

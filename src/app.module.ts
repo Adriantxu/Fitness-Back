@@ -6,10 +6,12 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { UtilsModule } from './utils/utils.module';
+import { ExercisesModule } from './exercises/exercises.module';
+import { WorkoutsModule } from './workouts/workouts.module';
+import { SetsModule } from './sets/sets.module';
 
 // Database
 import { PrismaDbModule } from './prisma-db/prisma-db.module';
-import { ExercisesModule } from './exercises/exercises.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { ExercisesModule } from './exercises/exercises.module';
     UserModule,
     UtilsModule,
     ExercisesModule,
+    WorkoutsModule,
+    SetsModule,
   ],
   controllers: [],
   providers: [],
