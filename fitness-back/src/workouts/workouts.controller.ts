@@ -3,19 +3,22 @@ import {
   Body,
   Controller,
   ForbiddenException,
+  Get,
+  Param,
   Post,
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { Utils } from 'src/utils/middlewareHelper';
 import { workoutCreateDto } from './dto';
 import { validate } from 'class-validator';
+import { WorkoutsService } from './workouts.service';
 
 @Controller('workouts')
 export class WorkoutsController {
-  constructor(private utils: Utils) {}
+  constructor(private workoutsService: WorkoutsService, private utils: Utils) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
@@ -32,6 +35,41 @@ export class WorkoutsController {
         'An error happend while retrieving information.',
       );
     }
-    return 'createWorkout';
+    return await this.workoutsService.createWorkout(userId, rawBody);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get()
+  async getWorkouts(@Req() req: Request) {
+    const user = this.utils.extractUserJwtMiddleware(req);
+    const userId = user ? parseInt(user['sub'] as string) : null;
+
+    if (userId == null)
+      throw new ForbiddenException(
+        'An error happend while retrieving information.',
+      );
+    return await this.workoutsService.getWorkouts(userId);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/:id')
+  async getWorkout(@Req() req: Request, @Param('id') workoutId: string) {
+    const user = this.utils.extractUserJwtMiddleware(req);
+    const userId = user ? parseInt(user['sub'] as string) : null;
+    const workoutIdNumber = parseInt(workoutId.substring(1), 10);
+
+    if (workoutIdNumber.toString() === 'NaN') {
+      throw new BadRequestException('Workout does not exist');
+    }
+    if (userId == null)
+      throw new ForbiddenException(
+        'An error happend while retrieving information.',
+      );
+    const exist = await this.workoutsService.getWorkout(
+      userId,
+      workoutIdNumber,
+    );
+    if (!exist) throw new BadRequestException('Workout does not exist');
+    return exist;
   }
 }

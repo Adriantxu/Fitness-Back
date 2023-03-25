@@ -7,5 +7,6 @@ import { UtilsModule } from 'src/utils/utils.module';
   controllers: [WorkoutsController],
   providers: [WorkoutsService],
   imports: [UtilsModule],
+  exports: [WorkoutsService],
 })
 export class WorkoutsModule {}

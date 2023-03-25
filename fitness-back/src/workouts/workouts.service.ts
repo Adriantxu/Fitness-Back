@@ -11,9 +11,44 @@ export class WorkoutsService {
       data: {
         name: dto.name,
         userId,
-        date: '',
       },
     });
+    delete workout.userId;
     return workout;
+  }
+
+  async getWorkouts(userId: number) {
+    const workouts = await this.prismaService.workoutPlan.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        Set: true,
+      },
+    });
+    workouts.map((workout) => delete workout.userId);
+    return { workouts: workouts };
+  }
+
+  async getWorkout(userId: number, workoutId: number) {
+    const workout = await this.prismaService.workoutPlan.findFirst({
+      where: {
+        id: workoutId,
+        userId,
+      },
+      // include: {
+      //   Set: true,
+      // },
+    });
+    if (!workout) return null;
+    delete workout.userId;
+    return workout;
+  }
+
+  async getWorkoutDate(workoutId: number) {
+    return this.prismaService.workoutPlan.findFirst({
+      where: { id: workoutId },
+      select: { date: true },
+    });
   }
 }
