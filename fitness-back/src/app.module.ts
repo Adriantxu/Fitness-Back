@@ -10,6 +10,7 @@ import { UtilsModule } from './utils/utils.module';
 // Database
 import { PrismaDbModule } from './prisma-db/prisma-db.module';
 import { ExercisesModule } from './exercises/exercises.module';
+import { WorkoutsModule } from './workouts/workouts.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { ExercisesModule } from './exercises/exercises.module';
     UserModule,
     UtilsModule,
     ExercisesModule,
+    WorkoutsModule,
   ],
   controllers: [],
   providers: [],
