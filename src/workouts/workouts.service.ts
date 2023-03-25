@@ -36,9 +36,9 @@ export class WorkoutsService {
         id: workoutId,
         userId,
       },
-      // include: {
-      //   Set: true,
-      // },
+      include: {
+        Set: true,
+      },
     });
     if (!workout) return null;
     delete workout.userId;
@@ -49,6 +49,25 @@ export class WorkoutsService {
     return this.prismaService.workoutPlan.findFirst({
       where: { id: workoutId },
       select: { date: true },
+    });
+  }
+
+  async updateWorkout(workoutId: number, name: string) {
+    return await this.prismaService.workoutPlan.update({
+      where: {
+        id: workoutId,
+      },
+      data: {
+        name,
+      },
+    });
+  }
+
+  async deleteWorkout(workoutId: number) {
+    return await this.prismaService.workoutPlan.delete({
+      where: {
+        id: workoutId,
+      },
     });
   }
 }

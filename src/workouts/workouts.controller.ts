@@ -2,9 +2,11 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   ForbiddenException,
   Get,
   Param,
+  Patch,
   Post,
   Req,
   UseGuards,
@@ -71,5 +73,53 @@ export class WorkoutsController {
     );
     if (!exist) throw new BadRequestException('Workout does not exist');
     return exist;
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('/:id')
+  async updateWorkout(
+    @Req() req: Request,
+    @Param('id') workoutId: string,
+    @Body('name') name: string,
+  ) {
+    const user = this.utils.extractUserJwtMiddleware(req);
+    const userId = user ? parseInt(user['sub'] as string) : null;
+    const workoutIdNumber = parseInt(workoutId.substring(1), 10);
+
+    if (workoutIdNumber.toString() === 'NaN') {
+      throw new BadRequestException('Workout does not exist');
+    }
+    if (userId == null)
+      throw new ForbiddenException(
+        'An error happend while retrieving information.',
+      );
+    const exist = await this.workoutsService.getWorkout(
+      userId,
+      workoutIdNumber,
+    );
+    if (!exist) throw new BadRequestException('Workout does not exist');
+    return await this.workoutsService.updateWorkout(workoutIdNumber, name);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('/:id')
+  async deleteWorkout(@Req() req: Request, @Param('id') workoutId: string) {
+    const user = this.utils.extractUserJwtMiddleware(req);
+    const userId = user ? parseInt(user['sub'] as string) : null;
+    const workoutIdNumber = parseInt(workoutId.substring(1), 10);
+
+    if (workoutIdNumber.toString() === 'NaN') {
+      throw new BadRequestException('Workout does not exist');
+    }
+    if (userId == null)
+      throw new ForbiddenException(
+        'An error happend while retrieving information.',
+      );
+    const exist = await this.workoutsService.getWorkout(
+      userId,
+      workoutIdNumber,
+    );
+    if (!exist) throw new BadRequestException('Workout does not exist');
+    return await this.workoutsService.deleteWorkout(workoutIdNumber);
   }
 }
