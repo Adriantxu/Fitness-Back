@@ -16,6 +16,13 @@ export class ExercisesService {
     return { [bodyPart.name]: exercises };
   }
 
+  async checkExerciseIdExists(exerciseId: number) {
+    const exist = this.prisma.exercise.findFirst({
+      where: { id: exerciseId },
+    });
+    return exist ? true : false;
+  }
+
   async checkBodyPartIdExists(bodyId: number) {
     const exist = this.prisma.bodyPart.findFirst({
       where: { id: bodyId },
@@ -38,5 +45,12 @@ export class ExercisesService {
       .then((result) => {
         return result.map((item) => item.id);
       });
+  }
+
+  async getNameFromExerciseId(id: number) {
+    return this.prisma.exercise.findFirst({
+      where: { id: id },
+      select: { name: true },
+    });
   }
 }

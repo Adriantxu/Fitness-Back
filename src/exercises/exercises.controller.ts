@@ -66,4 +66,42 @@ export class ExercisesController {
     }
     return await this.exerciseService.getExercisesFromBodyId(bodyIdNumber);
   }
+
+  @ApiOperation({ summary: 'Get exercises name by Id' })
+  @ApiParam({
+    name: 'id',
+    required: true,
+    type: 'integer',
+    description: 'The ID of the exercise to get exercises for',
+  })
+  @ApiOkResponse({
+    description: 'The exercises for the specified body part',
+    schema: {
+      properties: {
+        name: {
+          type: 'string',
+          example: 'Bench Press',
+        },
+      },
+    },
+  })
+  @ApiForbiddenResponse({
+    description: 'The exercises you requested are not accessible.',
+  })
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/:id')
+  async getExerciseNameFromId(@Param('id') id: string) {
+    const IdNumber =
+      id[0] === ':' ? parseInt(id.substring(1), 10) : parseInt(id, 10);
+
+    if (
+      isNaN(IdNumber) ||
+      !(await this.exerciseService.checkExerciseIdExists(IdNumber))
+    ) {
+      throw new ForbiddenException(
+        'The exercises you requested are not accessible.',
+      );
+    }
+    return await this.exerciseService.getNameFromExerciseId(IdNumber);
+  }
 }

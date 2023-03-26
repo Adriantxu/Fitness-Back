@@ -19,7 +19,19 @@ import { SetsService } from './sets.service';
 import { setsCreateDto, setsUpdateDto } from './dto';
 import { WorkoutsService } from 'src/workouts/workouts.service';
 import { ExercisesService } from 'src/exercises/exercises.service';
+import {
+  ApiBearerAuth,
+  ApiTags,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiBody,
+  ApiOkResponse,
+  ApiParam,
+  ApiBadRequestResponse,
+} from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('sets')
 @Controller('sets')
 export class SetsController {
   constructor(
@@ -29,6 +41,11 @@ export class SetsController {
     private utils: Utils,
   ) {}
 
+  @ApiCreatedResponse({ description: 'The set has been successfully created.' })
+  @ApiForbiddenResponse({
+    description: 'An error happened while retrieving information.',
+  })
+  @ApiBody({ type: setsCreateDto })
   @UseGuards(AuthGuard('jwt'))
   @Post()
   async createWorkout(@Req() req: Request, @Body() rawBody: setsCreateDto) {
@@ -58,6 +75,15 @@ export class SetsController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @ApiOkResponse({ description: 'The sets were successfully retrieved.' })
+  @ApiForbiddenResponse({
+    description: 'An error happened while retrieving information.',
+  })
+  @ApiParam({
+    name: 'exerciseId',
+    example: '1',
+    description: 'The ID of the exercise to get sets for.',
+  })
   @Get('/:exerciseId')
   async getSets(
     @Req() req: Request,
@@ -78,6 +104,19 @@ export class SetsController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @ApiOkResponse({ description: 'The set has been successfully updated.' })
+  @ApiBadRequestResponse({
+    description: 'Set does not exist or validation error.',
+  })
+  @ApiForbiddenResponse({
+    description: 'An error happened while retrieving information.',
+  })
+  @ApiParam({
+    name: 'id',
+    example: '1',
+    description: 'The ID of the set to update.',
+  })
+  @ApiBody({ type: setsUpdateDto })
   @Patch('/:id')
   async updateSet(
     @Req() req: Request,
@@ -106,6 +145,16 @@ export class SetsController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @ApiOkResponse({ description: 'The set has been successfully deleted.' })
+  @ApiBadRequestResponse({ description: 'Set does not exist.' })
+  @ApiForbiddenResponse({
+    description: 'An error happened while retrieving information.',
+  })
+  @ApiParam({
+    name: 'id',
+    example: '1',
+    description: 'The ID of the set to delete.',
+  })
   @Delete('/:id')
   async deleteSet(@Req() req: Request, @Param('id') id: string) {
     const user = this.utils.extractUserJwtMiddleware(req);
