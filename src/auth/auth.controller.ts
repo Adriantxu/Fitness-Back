@@ -27,7 +27,16 @@ export class AuthController {
   @ApiOperation({ summary: 'Register a new user' })
   @ApiBody({ type: AuthRegisterDto })
   @ApiCreatedResponse({
-    description: 'The user has been successfully registered.',
+    description: 'The access token of the logged in user.',
+    schema: {
+      properties: {
+        accessToken: {
+          type: 'string',
+          example:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+        },
+      },
+    },
   })
   @ApiNotFoundResponse({ description: 'No task found for ID' })
   @ApiInternalServerErrorResponse({
