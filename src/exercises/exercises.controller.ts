@@ -91,7 +91,7 @@ export class ExercisesController {
     description: 'The exercises you requested are not accessible.',
   })
   @UseGuards(AuthGuard('jwt'))
-  @Get('/:id')
+  @Get('name/:id')
   async getExerciseNameFromId(@Param('id') id: string) {
     const IdNumber =
       id[0] === ':' ? parseInt(id.substring(1), 10) : parseInt(id, 10);
