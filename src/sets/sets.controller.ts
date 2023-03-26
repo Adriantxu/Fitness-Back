@@ -41,7 +41,21 @@ export class SetsController {
     private utils: Utils,
   ) {}
 
-  @ApiCreatedResponse({ description: 'The set has been successfully created.' })
+  @ApiCreatedResponse({
+    description: 'The set has been successfully created.',
+    schema: {
+      properties: {
+        id: { type: 'number', example: 4 },
+        exerciseId: { type: 'number', example: 1 },
+        workoutId: { type: 'number', example: 1 },
+        reps: { type: 'number', example: 12 },
+        weight: { type: 'number', example: 70 },
+        date: { type: 'string', example: '2023-03-25T17:29:57.231Z' },
+        setId: { type: 'number', example: 4 },
+        workoutPlanId: { type: 'number', example: 1 },
+      },
+    },
+  })
   @ApiForbiddenResponse({
     description: 'An error happened while retrieving information.',
   })
@@ -75,7 +89,24 @@ export class SetsController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @ApiOkResponse({ description: 'The sets were successfully retrieved.' })
+  @ApiOkResponse({
+    description: 'The sets were successfully retrieved.',
+    schema: {
+      properties: {
+        sets: {
+          type: 'array',
+          example: {
+            id: 3,
+            reps: 6,
+            weight: 80,
+            date: '2023-03-25T17:29:57.231Z',
+            exerciseId: 1,
+            workoutId: 1,
+          },
+        },
+      },
+    },
+  })
   @ApiForbiddenResponse({
     description: 'An error happened while retrieving information.',
   })
@@ -104,7 +135,19 @@ export class SetsController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @ApiOkResponse({ description: 'The set has been successfully updated.' })
+  @ApiOkResponse({
+    description: 'The set has been successfully created.',
+    schema: {
+      properties: {
+        id: { type: 'number', example: 4 },
+        exerciseId: { type: 'number', example: 1 },
+        workoutId: { type: 'number', example: 1 },
+        reps: { type: 'number', example: 12 },
+        weight: { type: 'number', example: 70 },
+        date: { type: 'string', example: '2023-03-25T17:29:57.231Z' },
+      },
+    },
+  })
   @ApiBadRequestResponse({
     description: 'Set does not exist or validation error.',
   })

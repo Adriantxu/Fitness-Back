@@ -33,14 +33,18 @@ export class SetsService {
   }
 
   async getSets(userId: number, exerciseId: number) {
-    return await this.prismaService.set.findMany({
-      where: {
-        workout: {
-          userId: userId,
+    return await this.prismaService.set
+      .findMany({
+        where: {
+          workout: {
+            userId: userId,
+          },
+          exerciseId: exerciseId,
         },
-        exerciseId: exerciseId,
-      },
-    });
+      })
+      .then((result) => {
+        return { sets: result };
+      });
   }
 
   async checkSetFromUsersWorkouts(userId: number, setId: number) {

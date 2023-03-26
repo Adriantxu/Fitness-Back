@@ -6,6 +6,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiForbiddenResponse,
   ApiOkResponse,
   ApiOperation,
@@ -15,6 +16,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { ExercisesService } from './exercises.service';
 
+@ApiBearerAuth()
 @ApiTags('exercises')
 @Controller('exercises')
 export class ExercisesController {
