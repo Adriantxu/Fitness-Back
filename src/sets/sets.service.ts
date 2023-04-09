@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaDbService } from 'src/prisma-db/prisma-db.service';
-import { WorkoutsService } from 'src/workouts/workouts.service';
+import { PrismaDbService } from '../prisma-db/prisma-db.service';
+import { WorkoutsService } from '../workouts/workouts.service';
 import { setsUpdateDto } from './dto';
 import { setsCreateDto } from './dto/setsCreate.dto';
 

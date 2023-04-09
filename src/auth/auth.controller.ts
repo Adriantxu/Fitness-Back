@@ -22,8 +22,6 @@ import {
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  // /auth/signup
-
   @ApiOperation({ summary: 'Register a new user' })
   @ApiBody({ type: AuthRegisterDto })
   @ApiCreatedResponse({

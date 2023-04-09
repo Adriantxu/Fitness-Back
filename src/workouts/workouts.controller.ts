@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
-import { Utils } from 'src/utils/middlewareHelper';
+import { Utils } from '../utils/middlewareHelper';
 import { workoutCreateDto } from './dto';
 import { validate } from 'class-validator';
 import { WorkoutsService } from './workouts.service';

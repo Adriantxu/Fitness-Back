@@ -14,11 +14,11 @@ import {
 import { Request } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { validate } from 'class-validator';
-import { Utils } from 'src/utils/middlewareHelper';
+import { Utils } from '../utils/middlewareHelper';
 import { SetsService } from './sets.service';
 import { setsCreateDto, setsUpdateDto } from './dto';
-import { WorkoutsService } from 'src/workouts/workouts.service';
-import { ExercisesService } from 'src/exercises/exercises.service';
+import { WorkoutsService } from '../workouts/workouts.service';
+import { ExercisesService } from '../exercises/exercises.service';
 import {
   ApiBearerAuth,
   ApiTags,
