@@ -34,7 +34,6 @@ async function bootstrap() {
       forbidUnknownValues: true,
     }),
   );
-
   await app.listen(3030);
 }
 bootstrap();
