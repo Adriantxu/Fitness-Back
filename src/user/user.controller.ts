@@ -18,7 +18,9 @@ import { UserService } from './user.service';
 import { Utils } from 'src/utils/middlewareHelper';
 import { UserUpdateDto } from './dto';
 import { validate } from 'class-validator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('users')
 @Controller('users')
 export class UserController {
   constructor(private userService: UserService, private utils: Utils) {}

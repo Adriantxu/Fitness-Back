@@ -17,7 +17,7 @@ async function bootstrap() {
     .addTag('auth')
     .addTag('exercises')
     .addTag('sets')
-    .addTag('user')
+    .addTag('users')
     .addTag('workouts')
     .build();
 
