@@ -106,4 +106,37 @@ export class ExercisesController {
     }
     return await this.exerciseService.getNameFromExerciseId(IdNumber);
   }
+
+  @ApiOperation({ summary: 'Get all exercises' })
+  @ApiOkResponse({
+    description: 'The exercises for the specified body part',
+    schema: {
+      properties: {
+        id: {
+          type: 'number',
+          example: 1,
+        },
+        name: {
+          type: 'string',
+          example: 'Bench Press',
+        },
+        description: {
+          type: 'string',
+          example:
+            'Isolation exercise for the biceps. Grasp dumbbells with an underhand grip and curl them upward to the shoulders.',
+        },
+        bodyPart: {
+          type: 'object',
+          example: {
+            name: 'Chest',
+          },
+        },
+      },
+    },
+  })
+  @UseGuards(AuthGuard('jwt'))
+  @Get()
+  async getAllExercises() {
+    return await this.exerciseService.getAllExercises();
+  }
 }

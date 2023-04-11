@@ -53,4 +53,15 @@ export class ExercisesService {
       select: { name: true },
     });
   }
+
+  async getAllExercises() {
+    return this.prisma.exercise.findMany({
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        bodyPart: { select: { name: true } },
+      },
+    });
+  }
 }
