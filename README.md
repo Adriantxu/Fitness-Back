@@ -24,7 +24,11 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+ - [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+ - This nestJS app is the API to the Flutter app found in Fitness-Front.
+ - You will need your own ".env" to run this project!
+ - Check the docker-compose to see which enviroment variables you need!
+ - Go to /Url/api route to check the Swagger Documantation
 
 ## Installation
 
